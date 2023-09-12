@@ -19,7 +19,7 @@ const pool = new Pool({
 app.post('/api/users', async (req, res) => {
     try{
         const { username, email } = req.body;
-        const query = 'INSERT INTO users (username, email', VALUES ($1, $2) RETURNING *';
+        const query = 'INSERT INTO users (username, email'), VALUES ($1, $2) RETURNING *';
         const values = [username, email];
         const result = await pool.query(query, values);
         res.json(result.rows[0]);
