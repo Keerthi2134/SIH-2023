@@ -16,10 +16,10 @@ const pool = new Pool({
     port: 5432,
 });
 
-app.post('/api/users', async (req, res) => {
+app.post('/api/sih', async (req, res) => {
     try{
         const { username, email } = req.body;
-        const query = 'INSERT INTO users (username, email'), VALUES ($1, $2) RETURNING *';
+        const query = 'INSERT INTO sih (username, email'), VALUES ($1, $2) RETURNING *';
         const values = [username, email];
         const result = await pool.query(query, values);
         res.json(result.rows[0]);
@@ -27,6 +27,19 @@ app.post('/api/users', async (req, res) => {
         console.log("Error creating user:", error);
         res.status(500).json({ error: 'Internal server error' });
     }
+});
+
+app.get('/api/sh1', async (req, res) => {
+    try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT * FROM sh1');
+        const products = result.rows;
+        client.release();
+
+        res.json(products);
+    } 
+    
+
 });
 
 function checkUserRole(req, res, next) {
